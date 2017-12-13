@@ -53,7 +53,7 @@ jobs:
         switch: off
       - TASK:
         - script: |
-            pushd $(shipctl get_resource_state "pect_repo")/setup
+            pushd $(shipctl get_resource_state "pect_repo")/provision
               shipctl copy_file_from_resource_state pect_net_tf_state terraform.tfstate .
               shipctl replace terraform.tfvars
               terraform plan
