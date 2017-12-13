@@ -3,26 +3,34 @@ resources:
   # pect is an acronym for provision-ecs-cluster-terraform
   - name: pect_repo
     type: gitRepo
+    # Replace dr_github with your own GitHub or SCM integration
+    # http://docs.shippable.com/platform/integration/github
     integration: dr_github
     pointer:
+      # Replace devops-recipes/provision-ecs-cluster-terraform with your SCM
+      # repository
       sourceName: "devops-recipes/provision-ecs-cluster-terraform"
 
-# AWS CLI config
+  # AWS integration needed by Terraform
   - name: pect_aws_keys
     type: integration
+    # Replace dr_aws_keys with your own AWS Keys integration
+    # http://docs.shippable.com/platform/integration/aws-keys/
     integration: dr_aws_keys
     pointer:
+      # Replace us-east-1 with the region where you want to provision the VPC
       region: us-east-1
 
-# Networking Terraform State
+  # State resource to store Terraform State
   - name: pect_net_tf_state
     type: state
 
-# VPC Creation Config
+  # VPC Creation Config
   - name: pect_net_conf
     type: params
     version:
       params:
+        # Configure these params based on your AWS Network configuration
         REGION: "us-east-1"
         AMI_VPC: "ami_vpc"
         AMI_NETWORK_CIDR: "200.0.0.0/16"
@@ -32,7 +40,8 @@ resources:
         TEST_PUBLIC_01_CIDR: "210.0.0.0/24"
         TEST_PUBLIC_02_CIDR: "210.0.10.0/24"
 
-# OUT AWS TEST VPC IDs
+  # Resource that stores the configuration of the resources created by Terraform
+  # that can be viewed in Shippable
   - name: test_vpc_conf
     type: params
     version:
