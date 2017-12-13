@@ -62,12 +62,12 @@ jobs:
               terraform show
             popd
         - script: |
-                shipctl post_resource_state test_vpc_conf versionName "$JOB_NAME.$BUILD_NUMBER"
-                shipctl put_resource_state test_vpc_conf REGION $REGION
-                shipctl put_resource_state test_vpc_conf TEST_VPC_ID $(terraform output test_vpc_id)
-                shipctl put_resource_state test_vpc_conf TEST_PUBLIC_SG_ID $(terraform output test_public_sg_id)
-                shipctl put_resource_state test_vpc_conf TEST_PUBLIC_SN_01_ID $(terraform output test_public_sn_01_id)
-                shipctl put_resource_state test_vpc_conf TEST_PUBLIC_SN_02_ID $(terraform output test_public_sn_02_id)
+            shipctl post_resource_state test_vpc_conf versionName "$JOB_NAME.$BUILD_NUMBER"
+            shipctl put_resource_state test_vpc_conf REGION $REGION
+            shipctl put_resource_state test_vpc_conf TEST_VPC_ID $(terraform output test_vpc_id)
+            shipctl put_resource_state test_vpc_conf TEST_PUBLIC_SG_ID $(terraform output test_public_sg_id)
+            shipctl put_resource_state test_vpc_conf TEST_PUBLIC_SN_01_ID $(terraform output test_public_sn_01_id)
+            shipctl put_resource_state test_vpc_conf TEST_PUBLIC_SN_02_ID $(terraform output test_public_sn_02_id)
       - OUT: test_vpc_conf
       - OUT: pect_net_tf_state
     on_success:
