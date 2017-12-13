@@ -1,0 +1,79 @@
+resources:
+
+  # pect is an acronym for provision-ecs-cluster-terraform
+  - name: pect_repo
+    type: gitRepo
+    integration: "drship_github"
+    pointer:
+      sourceName: "devops-recipes/provision-ecs-cluster-terraform"
+
+# AWS CLI config
+  - name: pect_aws_keys
+    type: integration
+    integration: dr-aws-keys
+    pointer:
+      region: us-east-1
+
+# Networking Terraform State
+  - name: pect_net_tf_state
+    type: state
+
+# VPC Creation Config
+  - name: pect_net_conf
+    type: params
+    version:
+      params:
+        REGION: "us-east-1"
+        AMI_VPC: "ami_vpc"
+        AMI_NETWORK_CIDR: "200.0.0.0/16"
+        AMI_PUBLIC_CIDR: "200.0.0.0/24"
+        TEST_VPC: "test_vpc"
+        TEST_NETWORK_CIDR: "210.0.0.0/16"
+        TEST_PUBLIC_01_CIDR: "210.0.0.0/24"
+        TEST_PUBLIC_02_CIDR: "210.0.10.0/24"
+
+# OUT AWS TEST VPC IDs
+  - name: test_vpc_conf
+    type: params
+    version:
+      params:
+        SEED: "initial_version"
+
+
+jobs:
+  # Set up Network - AWS IAM roles, profiles, VPCs etc. with TERRAFORM
+  - name: setup_net
+    type: runSh
+    steps:
+      - IN: pect_net_tf_state
+      - IN: pect_net_conf
+      - IN: pect_aws_keys
+        switch: off
+      - IN: pect_repo
+        switch: off
+      - TASK:
+        - script: |
+            pushd $(shipctl get_resource_state "pect_repo")/setup
+              shipctl copy_file_from_resource_state pect_net_tf_state terraform.tfstate .
+              shipctl replace terraform.tfvars
+              terraform plan
+              terraform apply
+            popd
+        - script: |
+                ship_resource_post_state test_vpc_conf versionName "Version from build $BUILD_NUMBER"
+                ship_resource_put_state test_vpc_conf REGION $REGION
+                ship_resource_put_state test_vpc_conf TEST_VPC_ID $(terraform output test_vpc_id)
+                ship_resource_put_state test_vpc_conf TEST_PUBLIC_SG_ID $(terraform output test_public_sg_id)
+                ship_resource_put_state test_vpc_conf TEST_PUBLIC_SN_01_ID $(terraform output test_public_sn_01_id)
+                ship_resource_put_state test_vpc_conf TEST_PUBLIC_SN_02_ID $(terraform output test_public_sn_02_id)
+      - OUT: test_vpc_conf
+      - OUT: pect_net_tf_state
+    on_success:
+      - script: echo "SUCCESS"
+    on_failure:
+      - script: echo "FAILURE"
+    always:
+      - script: |
+          pushd $(shipctl get_resource_state "pect_repo")/setup
+            shipctl copy_file_to_resource_state terraform.tfstate pect_net_tf_state
+          popd
