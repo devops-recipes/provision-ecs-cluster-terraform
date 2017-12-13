@@ -61,12 +61,12 @@ jobs:
               terraform apply
             popd
         - script: |
-                ship_resource_post_state test_vpc_conf versionName "Version from build $BUILD_NUMBER"
-                ship_resource_put_state test_vpc_conf REGION $REGION
-                ship_resource_put_state test_vpc_conf TEST_VPC_ID $(terraform output test_vpc_id)
-                ship_resource_put_state test_vpc_conf TEST_PUBLIC_SG_ID $(terraform output test_public_sg_id)
-                ship_resource_put_state test_vpc_conf TEST_PUBLIC_SN_01_ID $(terraform output test_public_sn_01_id)
-                ship_resource_put_state test_vpc_conf TEST_PUBLIC_SN_02_ID $(terraform output test_public_sn_02_id)
+                shipctl post_resource_state test_vpc_conf versionName "Version from build $BUILD_NUMBER"
+                shipctl put_resource_state test_vpc_conf REGION $REGION
+                shipctl put_resource_state test_vpc_conf TEST_VPC_ID $(terraform output test_vpc_id)
+                shipctl put_resource_state test_vpc_conf TEST_PUBLIC_SG_ID $(terraform output test_public_sg_id)
+                shipctl put_resource_state test_vpc_conf TEST_PUBLIC_SN_01_ID $(terraform output test_public_sn_01_id)
+                shipctl put_resource_state test_vpc_conf TEST_PUBLIC_SN_02_ID $(terraform output test_public_sn_02_id)
       - OUT: test_vpc_conf
       - OUT: pect_net_tf_state
     on_success:
