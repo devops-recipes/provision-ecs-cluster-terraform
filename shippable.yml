@@ -62,7 +62,7 @@ jobs:
               terraform show
             popd
         - script: |
-                shipctl post_resource_state test_vpc_conf versionName "Version from build $BUILD_NUMBER"
+                shipctl post_resource_state test_vpc_conf versionName "$JOB_NAME.$BUILD_NUMBER"
                 shipctl put_resource_state test_vpc_conf REGION $REGION
                 shipctl put_resource_state test_vpc_conf TEST_VPC_ID $(terraform output test_vpc_id)
                 shipctl put_resource_state test_vpc_conf TEST_PUBLIC_SG_ID $(terraform output test_public_sg_id)
