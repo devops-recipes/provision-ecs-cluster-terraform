@@ -41,8 +41,8 @@ resources:
 
 
 jobs:
-  # Set up Network - AWS IAM roles, profiles, VPCs etc. with TERRAFORM
-  - name: setup_net
+  # Provision Network - AWS IAM role and VPC with TERRAFORM
+  - name: pect_provision_network
     type: runSh
     steps:
       - IN: pect_net_tf_state
@@ -78,6 +78,37 @@ jobs:
     always:
       - script: |
           pushd $(shipctl get_resource_state "pect_repo")/provision
-            cat terraform.tfstate
+            shipctl copy_file_to_resource_state terraform.tfstate pect_net_tf_state
+          popd
+
+  # Deprovision Network - deprovision AWS IAM role and vpc with TERRAFORM
+  - name: pect_deprovision_network
+    type: runSh
+    steps:
+      - IN: pect_provision_vpc
+      - IN: pect_net_tf_state
+        switch: off
+      - IN: pect_net_conf
+        switch: off
+      - IN: pect_aws_keys
+        switch: off
+      - IN: pect_repo
+        switch: off
+      - TASK:
+        - script: |
+            pushd $(shipctl get_resource_state "pect_repo")/provision
+              shipctl copy_file_from_resource_state pect_net_tf_state terraform.tfstate .
+              shipctl replace terraform.tfvars
+              terraform destroy -force
+            popd
+      - OUT: test_vpc_conf
+      - OUT: pect_net_tf_state
+    on_success:
+      - script: echo "SUCCESS"
+    on_failure:
+      - script: echo "FAILURE"
+    always:
+      - script: |
+          pushd $(shipctl get_resource_state "pect_repo")/provision
             shipctl copy_file_to_resource_state terraform.tfstate pect_net_tf_state
           popd
