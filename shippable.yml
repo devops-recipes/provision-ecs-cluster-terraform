@@ -3,14 +3,14 @@ resources:
   # pect is an acronym for provision-ecs-cluster-terraform
   - name: pect_repo
     type: gitRepo
-    integration: "drship_github"
+    integration: drship_github
     pointer:
       sourceName: "devops-recipes/provision-ecs-cluster-terraform"
 
 # AWS CLI config
   - name: pect_aws_keys
     type: integration
-    integration: dr-aws-keys
+    integration: drship-aws-keys
     pointer:
       region: us-east-1
 
