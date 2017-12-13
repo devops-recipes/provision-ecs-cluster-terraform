@@ -75,5 +75,6 @@ jobs:
     always:
       - script: |
           pushd $(shipctl get_resource_state "pect_repo")/setup
+            cat terraform.tfstate
             shipctl copy_file_to_resource_state terraform.tfstate pect_net_tf_state
           popd
