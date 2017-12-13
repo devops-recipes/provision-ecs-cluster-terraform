@@ -59,6 +59,7 @@ jobs:
               cat terraform.tfvars
               terraform plan
               terraform apply
+              terraform show
             popd
         - script: |
                 shipctl post_resource_state test_vpc_conf versionName "Version from build $BUILD_NUMBER"
@@ -75,7 +76,7 @@ jobs:
       - script: echo "FAILURE"
     always:
       - script: |
-          pushd $(shipctl get_resource_state "pect_repo")/setup
+          pushd $(shipctl get_resource_state "pect_repo")/provision
             cat terraform.tfstate
             shipctl copy_file_to_resource_state terraform.tfstate pect_net_tf_state
           popd
