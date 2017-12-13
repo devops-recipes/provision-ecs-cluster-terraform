@@ -85,7 +85,7 @@ jobs:
   - name: pect_deprovision_network
     type: runSh
     steps:
-      - IN: pect_provision_vpc
+      - IN: pect_provision_network
       - IN: pect_net_tf_state
         switch: off
       - IN: pect_net_conf
