@@ -59,7 +59,6 @@ jobs:
               cat terraform.tfvars
               terraform plan
               terraform apply
-              terraform show
             popd
         - script: |
             shipctl post_resource_state test_vpc_conf versionName "$JOB_NAME.$BUILD_NUMBER"
