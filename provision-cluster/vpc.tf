@@ -25,7 +25,6 @@ resource "aws_subnet" "test_public_sn_01" {
   vpc_id = "${aws_vpc.test_vpc.id}"
   cidr_block = "${var.test_public_01_cidr}"
   availability_zone = "${data.aws_availability_zones.available.names[0]}"
-  # availability_zone = "${lookup(var.availability_zone, var.region)}"
   tags {
     Name = "test_public_sn_01"
   }
@@ -36,7 +35,6 @@ resource "aws_subnet" "test_public_sn_02" {
   vpc_id = "${aws_vpc.test_vpc.id}"
   cidr_block = "${var.test_public_02_cidr}"
   availability_zone = "${data.aws_availability_zones.available.names[1]}"
-  # availability_zone = "${lookup(var.availability_zone, var.region)}"
   tags {
     Name = "test_public_sn_02"
   }
@@ -125,6 +123,7 @@ resource "aws_security_group" "test_public_sg" {
     cidr_blocks = [
       "0.0.0.0/0"]
   }
+
   tags {
     Name = "test_public_sg"
   }

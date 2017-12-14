@@ -3,6 +3,10 @@ resource "aws_alb" "ecs-load-balancer" {
     name                = "ecs-load-balancer"
     security_groups     = ["${aws_security_group.test_public_sg.id}"]
     subnets             = ["${aws_subnet.test_public_sn_01.id}", "${aws_subnet.test_public_sn_02.id}"]
+
+    tags {
+      Name = "ecs-load-balancer"
+    }
 }
 
 resource "aws_alb_target_group" "ecs-target_group" {
@@ -21,6 +25,10 @@ resource "aws_alb_target_group" "ecs-target_group" {
         protocol            = "HTTP"
         timeout             = "5"
     }
+
+    tags {
+      Name = "ecs-target_group"
+    }
 }
 
 resource "aws_alb_listener" "alb-listener" {
@@ -31,5 +39,9 @@ resource "aws_alb_listener" "alb-listener" {
     default_action {
         target_group_arn = "${aws_alb_target_group.ecs-target_group.arn}"
         type             = "forward"
+    }
+
+    tags {
+      Name = "alb-listener"
     }
 }

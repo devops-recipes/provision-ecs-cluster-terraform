@@ -31,10 +31,9 @@ resources:
     version:
       params:
         # Configure these params based on your AWS Network configuration
+        ECS_CLUSTER: "sample-cluster"
+        ECS_KEY_PAIR_NAME: "ambarish-useast1"
         REGION: "us-east-1"
-        AMI_VPC: "ami_vpc"
-        AMI_NETWORK_CIDR: "200.0.0.0/16"
-        AMI_PUBLIC_CIDR: "200.0.0.0/24"
         TEST_VPC: "test_vpc"
         TEST_NETWORK_CIDR: "210.0.0.0/16"
         TEST_PUBLIC_01_CIDR: "210.0.0.0/24"
