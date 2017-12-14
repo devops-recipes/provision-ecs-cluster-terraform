@@ -70,7 +70,8 @@ jobs:
               shipctl replace terraform.tfvars
               cat terraform.tfvars
               terraform plan
-              terraform apply
+              terraform apply || true
+              terraform apply || true
             popd
         - script: |
             pushd $(shipctl get_resource_state "pect_repo")/provision-cluster
