@@ -71,7 +71,7 @@ jobs:
               cat terraform.tfvars
               terraform plan
               terraform apply || true
-              terraform apply
+              terraform apply || true
             popd
         - script: |
             pushd $(shipctl get_resource_state "pect_repo")/provision-cluster
@@ -99,6 +99,7 @@ jobs:
     type: runSh
     steps:
       - IN: pect_provision_network
+        switch: off
       - IN: pect_net_tf_state
         switch: off
       - IN: pect_net_conf
