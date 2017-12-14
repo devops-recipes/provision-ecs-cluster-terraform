@@ -39,6 +39,9 @@ resources:
         TEST_NETWORK_CIDR: "210.0.0.0/16"
         TEST_PUBLIC_01_CIDR: "210.0.0.0/24"
         TEST_PUBLIC_02_CIDR: "210.0.10.0/24"
+        MAX_INSTANCE_SIZE: 3
+        MIN_INSTANCE_SIZE: 1
+        DESIRED_CAPACITY: 2
 
   # Resource that stores the configuration of the resources created by Terraform
   # that can be viewed in Shippable
