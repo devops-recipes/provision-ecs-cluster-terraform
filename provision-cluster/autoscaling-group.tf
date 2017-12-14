@@ -7,7 +7,4 @@ resource "aws_autoscaling_group" "ecs-autoscaling-group" {
     vpc_zone_identifier         = ["${aws_subnet.test_public_sn_01.id}", "${aws_subnet.test_public_sn_02.id}"]
     launch_configuration        = "${aws_launch_configuration.ecs-launch-configuration.name}"
     health_check_type           = "ELB"
-    tags {
-      Name = "ecs-autoscaling-group"
-    }
-}
+  }
