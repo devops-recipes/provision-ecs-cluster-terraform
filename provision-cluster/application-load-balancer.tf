@@ -37,7 +37,7 @@ resource "aws_alb_listener" "alb-listener" {
     protocol          = "HTTP"
 
     default_action {
-        target_group_arn = "${aws_alb_target_group.ecs-target_group.arn}"
+        target_group_arn = "${aws_alb_target_group.ecs-target-group.arn}"
         type             = "forward"
     }
 
