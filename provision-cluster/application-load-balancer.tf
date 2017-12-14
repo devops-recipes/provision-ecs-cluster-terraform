@@ -9,8 +9,8 @@ resource "aws_alb" "ecs-load-balancer" {
     }
 }
 
-resource "aws_alb_target_group" "ecs-target_group" {
-    name                = "ecs-target_group"
+resource "aws_alb_target_group" "ecs-target-group" {
+    name                = "ecs-target-group"
     port                = "80"
     protocol            = "HTTP"
     vpc_id              = "${aws_vpc.test_vpc.id}"
@@ -27,7 +27,7 @@ resource "aws_alb_target_group" "ecs-target_group" {
     }
 
     tags {
-      Name = "ecs-target_group"
+      Name = "ecs-target-group"
     }
 }
 
